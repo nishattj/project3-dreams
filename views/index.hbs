@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dreams</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+  <h1>Dreams</h1>
+
+  <form action="/dreams/add" method="POST">
+    <input type="text" name="title" placeholder="Dream Title" required>
+    <textarea name="description" placeholder="Describe your dream..." required></textarea>
+    <select name="mood" required>
+      <option value="">Select Mood</option>
+      <option value="happy" {{#if (eq selectedMood 'happy')}}selected{{/if}}>Happy</option>
+      <option value="sad" {{#if (eq selectedMood 'sad')}}selected{{/if}}>Sad</option>
+      <option value="weird" {{#if (eq selectedMood 'weird')}}selected{{/if}}>Weird</option>
+      <option value="scary" {{#if (eq selectedMood 'scary')}}selected{{/if}}>Scary</option>
+    </select>
+    <button type="submit">Submit Dream</button>
+  </form>
+
+  <h2>Last Dream Remembered</h2>
+  {{#if lastDream}}
+    <div class="dream">
+      <h3>{{lastDream.title}}</h3>
+      <p>{{lastDream.description}}</p>
+      <small>Mood: {{lastDream.mood}} | Date: {{lastDream.createdAt}}</small>
+    </div>
+  {{else}}
+    <p>No dreams remembered yet.</p>
+  {{/if}}
+
+  <h2>Recent Dreams</h2>
+
+  <form method="GET" action="/">
+    <select name="mood" onchange="this.form.submit()">
+      <option value="">All Moods</option>
+      <option value="happy" {{#if (eq selectedMood 'happy')}}selected{{/if}}>Happy</option>
+      <option value="sad" {{#if (eq selectedMood 'sad')}}selected{{/if}}>Sad</option>
+      <option value="weird" {{#if (eq selectedMood 'weird')}}selected{{/if}}>Weird</option>
+      <option value="scary" {{#if (eq selectedMood 'scary')}}selected{{/if}}>Scary</option>
+    </select>
+  </form>
+
+  {{#if dreams.length}}
+    <div class="dream-grid">
+      {{#each dreams}}
+        <div class="dream">
+          <h3>{{this.title}}</h3>
+          <p>{{this.description}}</p>
+          <small>Mood: {{this.mood}} | Date: {{this.createdAt}}</small>
+        </div>
+      {{/each}}
+    </div>
+  {{else}}
+    <p>No dreams yet.</p>
+  {{/if}}
+
+</body>
+</html>
